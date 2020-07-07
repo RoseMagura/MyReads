@@ -10,9 +10,12 @@ class ListBooks extends Component {
     }
     updateQuery = (event) => {
         // event.preventDefault();
+        if (event.target.value !== ''){
         this.setState({
             query: event.target.value.trim()
-        }, this.searchAPI)
+        }, this.searchAPI)} else {
+            this.setState({query: ''})
+        }
 
     }
     clearQuery = () => {
