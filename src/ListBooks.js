@@ -12,22 +12,28 @@ class ListBooks extends Component {
         // event.preventDefault();
         this.setState({
             query: event.target.value.trim()
-        })
+        }, this.searchAPI)
+
     }
     clearQuery = () => {
         this.updateQuery('')
     }
-    searchAPI = (e, query) => {
-        e.preventDefault();
+    searchAPI = () => {
+        // e.preventDefault();
+        const query = this.state.query
         console.log(query)
         BooksAPI.search(query).then((search)=> 
             {this.setState({search: search})})
     }
     render() {
         const { query } = this.state
+        const { search } = this.state
         // const {books} = this.props
-        const results = this.state.search;
-       
+        // console.log('query', query)
+        // console.log('search', search)
+        const results = search === []
+            ? BooksAPI.getAll()
+            : search
        return(
         <div className="app">
         {this.state.showSearchPage ? (
@@ -35,33 +41,44 @@ class ListBooks extends Component {
             <div className="search-books-bar">
               <button className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</button>
               <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
                 <input type="text" 
                     placeholder="Search by title or author"
                     value={query}
                     onChange={(event)=> this.updateQuery(event)}/>
-                <button type="button" onClick={(e)=>this.searchAPI(e, query)}>Submit</button>
               </div>
             </div>
             <div className="search-books-results">
               <ol className="books-grid">
-                  {console.log(results)}
-                  
-                
-         
-                {/* {showingBooks.map((book)=>( */}
-                    {/* <li className='book-list-item'> */}
-                        {/* <div>something</div> */}
-                    {/* </li>))} */}
+                  {query.length > 0 && results.length > 0 &&
+                  results.map((book) => (
+                    <li key={book.id}> 
+                        <div className="book">
+                        <div className="book-top">
+                            {'imageLinks' in book &&
+                            <div className="book-cover" style={{width: 128, height: 193,
+                            backgroundImage: `url(${book.imageLinks['thumbnail']})`,
+                            backgroundRepeat: 'no-repeat',
+                            backgroundPosition: 'center',
+                            backgroundSize: 'cover'
+                            }}></div>} 
+                         <div className="book-shelf-changer">
+                              <select>
+                                <option value="move" disabled>Move to...</option>
+                                <option value="currentlyReading">Currently Reading</option>
+                                <option value="wantToRead">Want to Read</option>
+                                <option value="read">Read</option>
+                                <option value="none">None</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="book-title"> {book.title} </div>
+                          {'authors' in book && 
+                          <div className="book-authors"> 
+                            {book.authors.join(', ')} 
+                          </div>}                              
+                        </div>
+                    </li>))}
                     </ol>
-                {/* )) */}
             </div>
           </div>
         ) : (
