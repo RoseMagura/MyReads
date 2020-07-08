@@ -9,6 +9,10 @@ class ListBooks extends Component {
         search: [],
         books: []
     }
+    getAllBooks = () => {
+        BooksAPI.getAll().then((all)=>{
+            this.setState({books: all})
+        })}
     updateQuery = (event) => {
         if (event.target.value !== ''){
         this.setState({
@@ -21,19 +25,12 @@ class ListBooks extends Component {
         this.setState({query: '',
                        search: []})
     }
-    getAllBooks = () => {
-        const allBooks = BooksAPI.getAll().then((all)=>{
-            this.setState({books: all})
-        })
-    }
     searchAPI = () => {
         const query = this.state.query
         BooksAPI.search(query).then((search)=> 
             {this.setState({search: search})})
     }
     handleChange(book, event) {
-        console.log('book', book)
-        console.log('event', event.target.value)
         BooksAPI.update(book, event.target.value)
     }
     render() {
@@ -47,7 +44,7 @@ class ListBooks extends Component {
             : search
        return(
         <div className="app">
-        {this.state.showSearchPage ? (
+        {this.state.showSearchPage && (
           <div className="search-books">
             <div className="search-books-bar">
               <button className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</button>
@@ -95,93 +92,10 @@ class ListBooks extends Component {
                         </div>
                     </li>))}
                     </ol>
-            </div>
+                </div>
+            </div> )}
           </div>
-        ) : (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                    {allBooks.filter((b) => (
-                        b.shelf.includes('currentlyReading')
-                    )).map((item)=>(
-                        <li key={item.id}>
-                             {item.title}   
-                        </li>
-                    ))}
-                    </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Want to Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                    {allBooks.filter((b) => (
-                        b.shelf.includes('wantToRead')
-                    )).map((item)=>(
-                        <li key={item.id}>
-                             {item.title}   
-                        </li>
-                    ))}
-                    </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                    {allBooks.filter((b) => (
-                        b.shelf.includes('read')
-                    )).map((item)=>(
-                        <li key={item.id}>
-                            <div className="book">
-                        <div className="book-top">
-                            {'imageLinks' in item &&
-                            <div className="book-cover" style={{width: 128, height: 193,
-                            backgroundImage: `url(${item.imageLinks['thumbnail']})`,
-                            backgroundRepeat: 'no-repeat',
-                            backgroundPosition: 'center',
-                            backgroundSize: 'cover'
-                            }}></div>} 
-                         <div className="book-shelf-changer">
-                              <select value={this.state.value} onChange={(event) => this.handleChange(item, event)}>
-                                <option value="move" disabled>Move to...</option>
-                                <option value="currentlyReading">Currently Reading</option>
-                                <option value="wantToRead">Want to Read</option>
-                                <option value="read">Read</option>
-                                <option value="none">None</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div className="book-title"> {item.title} </div>
-                          {'authors' in item && 
-                          <div className="book-authors"> 
-                            {item.authors.join(', ')} 
-                          </div>}                              
-                        </div>   
-                        </li>
-                    ))}
-                        
-                    </ol>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="open-search">
-              <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
-            </div>
-          </div>
-        )}
-      </div>
-
-       ) 
-    }
-}
+        )                     
+}}
 
 export default ListBooks

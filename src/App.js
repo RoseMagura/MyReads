@@ -1,5 +1,6 @@
 import React from 'react'
 import SearchBooks from './SearchBooks'
+import ShelveBooks from './ShelveBooks'
 import * as BooksAPI from './BooksAPI'
 import { Route } from 'react-router-dom'
 import './App.css'
@@ -25,7 +26,11 @@ class BooksApp extends React.Component {
           )}       
   render() {
     return (
-        <SearchBooks/>
+        <div>
+            <SearchBooks/>
+            <ShelveBooks/>
+        </div>
+
     )
   }
 }
