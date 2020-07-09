@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import * as BooksAPI from './BooksAPI' //remove later?
+import * as BooksAPI from './BooksAPI'
 // import PropTypes from 'prop-types'
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 class ListBooks extends Component {
     state = {
@@ -36,18 +36,15 @@ class ListBooks extends Component {
     render() {
         const { query } = this.state
         const { search } = this.state
-        this.getAllBooks()
         const allBooks = this.state.books
-        // console.log(allBooks)
         let results = search === []
             ? allBooks
             : search
        return(
         <div className="app">
-        {this.state.showSearchPage && (
           <div className="search-books">
             <div className="search-books-bar">
-              <button className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</button>
+              <Link className="close-search" to='/'>Close</Link>
               <div className="search-books-input-wrapper">
                 <input type="text" 
                     placeholder="Search by title or author"
@@ -93,7 +90,7 @@ class ListBooks extends Component {
                     </li>))}
                     </ol>
                 </div>
-            </div> )}
+            </div> 
           </div>
         )                     
 }}

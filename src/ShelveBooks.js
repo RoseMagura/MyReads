@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import * as BooksAPI from './BooksAPI'
+import { Link } from 'react-router-dom'
 
 class ShelveBooks extends Component {
     state = {
-        books: []
+        books: [],
+        reload: false
     }
     sortBooks = (section) => {
-        this.getAllBooks()
         const allBooks = this.state.books
         return(allBooks.filter((b) => (
             b.shelf.includes(section)
@@ -15,14 +16,16 @@ class ShelveBooks extends Component {
                 <div className="book">
             <div className="book-top">
                 {'imageLinks' in item &&
-                <div className="book-cover" style={{width: 128, height: 193,
-                backgroundImage: `url(${item.imageLinks['thumbnail']})`,
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
-                backgroundSize: 'cover'
-                }}></div>} 
+                <div className="book-cover" 
+                    style={{width: 128, height: 193,
+                    backgroundImage: `url(${item.imageLinks['thumbnail']})`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                    backgroundSize: 'cover'
+                    }}></div>} 
              <div className="book-shelf-changer">
-                  <select value={this.state.value} onChange={(event) => this.handleChange(item, event)}>
+                  <select value={item.shelf} onChange={(event) => 
+                    this.handleChange(item, event)}>
                     <option value="move" disabled>Move to...</option>
                     <option value="currentlyReading">Currently Reading</option>
                     <option value="wantToRead">Want to Read</option>
@@ -43,15 +46,23 @@ class ShelveBooks extends Component {
     getAllBooks = () => {
         BooksAPI.getAll().then((all)=>{
             this.setState({books: all})
+            // return(all)
         })}
     handleChange = (book, event) => {
         console.log('book', book)
         console.log('event', event.target.value)
         BooksAPI.update(book, event.target.value)
-    }    
-    render(){
         this.getAllBooks()
-        const allBooks = this.state.books
+        // this.sortBooks()
+        // window.location.reload(false)
+        // this.setState({reload: true})
+    }    
+    componentDidMount() {
+        this.getAllBooks()
+    }
+    render(){
+        const shelves = ['currentlyReading', 'wantToRead', 'read']
+        // const headings = ['Currently Reading']
     return (     
         (
             <div className="list-books">
@@ -60,7 +71,9 @@ class ShelveBooks extends Component {
               </div>
               <div className="list-books-content">
                 <div>
-
+                    {/* {shelves.map((shelf)=>{
+                        console.log(shelf)
+                    })} */}
                   <div className="bookshelf">
                     <h2 className="bookshelf-title">Currently Reading</h2>
                     <div className="bookshelf-books">
@@ -91,7 +104,7 @@ class ShelveBooks extends Component {
                 </div>
               </div>
               <div className="open-search">
-                <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
+                <Link to='/search'className="open-search">Add Book</Link>
               </div>
             </div>
           )

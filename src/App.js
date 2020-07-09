@@ -27,8 +27,11 @@ class BooksApp extends React.Component {
   render() {
     return (
         <div>
-            <SearchBooks/>
+            <Route exact path='/' render={() => (
             <ShelveBooks/>
+            )}/>
+            <Route path='/search' component={SearchBooks}/>
+            
         </div>
 
     )
