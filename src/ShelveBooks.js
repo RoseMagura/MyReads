@@ -43,6 +43,9 @@ class ShelveBooks extends Component {
             </li>
         )))
     }
+    foo = () => {
+        console.log()
+    }
     getAllBooks = () => {
         BooksAPI.getAll().then((all)=>{
             this.setState({books: all})

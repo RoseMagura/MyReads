@@ -53,12 +53,18 @@ class ListBooks extends Component {
               </div>
             </div>
             <div className="search-books-results">
+            {/* {console.log('query', query.length, 'results', results)} */}
+            {results['error'] === 'empty query' && <div className='showing-books'>
+                    <span> No results </span> 
+                    <button onClick={this.clearQuery}>Clear Search</button>
+                </div>}
                 {query.length > 0 && results.length > 0 &&
                 <div className='showing-books'>
-                    <span>Now showing {results.length} books</span> 
+                    <span>Now showing {results.length} books </span> 
                     <button onClick={this.clearQuery}>Clear Search</button>
                 </div>}
               <ol className="books-grid">
+                  
                   {query.length > 0 && results.length > 0 &&
                   results.map((book) => (
                     <li key={book.id}> 
