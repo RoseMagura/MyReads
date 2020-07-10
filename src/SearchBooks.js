@@ -32,6 +32,10 @@ class ListBooks extends Component {
     }
     handleChange(book, event) {
         BooksAPI.update(book, event.target.value)
+        const caps = event.target.value.charAt(0).toUpperCase() +
+            event.target.value.slice(1)
+        const shelfName = caps.split(/(?=[A-Z])/).join(' ')    
+        alert(`Moving ${book.title} to ${shelfName}`)
     }
     render() {
         const { query } = this.state
@@ -78,8 +82,8 @@ class ListBooks extends Component {
                             backgroundSize: 'cover'
                             }}></div>} 
                          <div className="book-shelf-changer">
-                              <select value={this.state.value} onChange={(event) => this.handleChange(book, event)}>
-                                <option value="move" disabled>Move to...</option>
+                              <select onChange={(event) => this.handleChange(book, event)}>
+                                <option value="move">Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
                                 <option value="read">Read</option>
