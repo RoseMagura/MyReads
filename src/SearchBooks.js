@@ -30,11 +30,15 @@ class ListBooks extends Component {
         BooksAPI.search(query).then((search)=> 
             {this.setState({search: search})})
     }
+    format(word){
+        const caps = word.charAt(0).toUpperCase() +
+        word.slice(1)
+        const formatted = caps.split(/(?=[A-Z])/).join(' ') 
+        return(formatted)  
+    }
     handleChange(book, event) {
         BooksAPI.update(book, event.target.value)
-        const caps = event.target.value.charAt(0).toUpperCase() +
-            event.target.value.slice(1)
-        const shelfName = caps.split(/(?=[A-Z])/).join(' ')    
+        const shelfName = this.format(event.target.value)
         alert(`Moving ${book.title} to ${shelfName}`)
     }
     render() {
