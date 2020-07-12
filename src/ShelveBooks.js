@@ -1,38 +1,43 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import * as BooksAPI from './BooksAPI'
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import Book from './Book'
 
 class ShelveBooks extends Component {
     state = {
         books: []
     }
+    //Sort the books into the three shelves and update on change
     sortBooks = (all, section) => {
-        return(all.filter((b) => (
+        return (all.filter((b) => (
             b.shelf.includes(section)
-        )).map((item)=>(
-           <Book 
+        )).map((item) => (
+            <Book 
            key={item.id}
            info={item}
            onChange={(item, event)=>{
-            //    console.log(event)
                this.handleChange(item, event)}}/>
         )))
     }
+    //call to the API and set the state accordingly
     getAllBooks = () => {
-        BooksAPI.getAll().then((all)=>{
-            this.setState({books: all})})}
+        BooksAPI.getAll().then((all) => {
+            this.setState({
+                books: all
+            })
+        })
+    }
 
     handleChange = (book, event) => {
         BooksAPI.update(book, event.target.value).then(this.getAllBooks)
-    }    
+    }
     componentDidMount() {
         this.getAllBooks()
     }
-    render(){
-    return (     
-        (
-            <div className="list-books">
+    render() {
+        return (
+            (
+                <div className="list-books">
               <div className="list-books-title">
                 <h1>MyReads</h1>
               </div>
@@ -68,7 +73,8 @@ class ShelveBooks extends Component {
                 <Link to='/search'className="open-search">Add Book</Link>
               </div>
             </div>
-          )
-    )
-}}
+            )
+        )
+    }
+}
 export default ShelveBooks

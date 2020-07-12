@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import * as BooksAPI from './BooksAPI'
-// import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
 class ListBooks extends Component {
@@ -10,31 +9,42 @@ class ListBooks extends Component {
         books: []
     }
     getAllBooks = () => {
-        BooksAPI.getAll().then((all)=>{
-            this.setState({books: all})
-        })}
+        BooksAPI.getAll().then((all) => {
+            this.setState({
+                books: all
+            })
+        })
+    }
     updateQuery = (event) => {
-        if (event.target.value !== ''){
-        this.setState({
-            query: event.target.value
-        }, this.searchAPI)} else {
-            this.setState({query: ''})
+        if (event.target.value !== '') {
+            this.setState({
+                query: event.target.value
+            }, this.searchAPI)
+        } else {
+            this.setState({
+                query: ''
+            })
         }
     }
     clearQuery = () => {
-        this.setState({query: '',
-                       search: []})
+        this.setState({
+            query: '',
+            search: []
+        })
     }
     searchAPI = () => {
         const query = this.state.query
-        BooksAPI.search(query).then((search)=> 
-            {this.setState({search: search})})
+        BooksAPI.search(query).then((search) => {
+            this.setState({
+                search: search
+            })
+        })
     }
-    format(word){
+    format(word) {
         const caps = word.charAt(0).toUpperCase() +
-        word.slice(1)
-        const formatted = caps.split(/(?=[A-Z])/).join(' ') 
-        return(formatted)  
+            word.slice(1)
+        const formatted = caps.split(/(?=[A-Z])/).join(' ')
+        return (formatted)
     }
     handleChange(book, event) {
         BooksAPI.update(book, event.target.value)
@@ -42,14 +52,18 @@ class ListBooks extends Component {
         alert(`Moving ${book.title} to ${shelfName}`)
     }
     render() {
-        const { query } = this.state
-        const { search } = this.state
+        const {
+            query
+        } = this.state
+        const {
+            search
+        } = this.state
         const allBooks = this.state.books
-        let results = search === []
-            ? allBooks
-            : search
-       return(
-        <div className="app">
+        let results = search === [] ?
+            allBooks :
+            search
+        return (
+            <div className="app">
           <div className="search-books">
             <div className="search-books-bar">
               <Link className="close-search" to='/'>Close</Link>
@@ -71,10 +85,9 @@ class ListBooks extends Component {
                     <span>Now showing {results.length} books </span> 
                     <button onClick={this.clearQuery}>Clear Search</button>
                 </div>}
-              <ol className="books-grid">
-                  
+              <ol className="books-grid"> 
                   {query.length > 0 && results.length > 0 &&
-                  results.map((book) => (
+                    results.map((book) => (
                     <li key={book.id}> 
                         <div className="book">
                         <div className="book-top">
@@ -106,7 +119,8 @@ class ListBooks extends Component {
                 </div>
             </div> 
           </div>
-        )                     
-}}
+        )
+    }
+}
 
 export default ListBooks
