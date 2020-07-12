@@ -1,34 +1,22 @@
 import React, { Component } from 'react'
 import * as BooksAPI from './BooksAPI'
+import Shelf from './Shelf'
 import { Link } from 'react-router-dom'
-import Book from './Book'
 
-class ShelveBooks extends Component {
-    state = {
-        books: []
-    }
-    sortBooks = (all, section) => {
-        return(all.filter((b) => (
-            b.shelf.includes(section)
-        )).map((item)=>(
-           <Book 
-           key={item.id}
-           info={item}
-           onChange={(item, event)=>{
-            //    console.log(event)
-               this.handleChange(item, event)}}/>
-        )))
-    }
-    getAllBooks = () => {
-        BooksAPI.getAll().then((all)=>{
-            this.setState({books: all})})}
+class ListBooks extends Component {
+    // state = {
+    //     books: []
+    // }
+    // getAllBooks = () => {
+    //     BooksAPI.getAll().then((all)=>{
+    //         this.setState({books: all})})}
 
-    handleChange = (book, event) => {
-        BooksAPI.update(book, event.target.value).then(this.getAllBooks)
-    }    
-    componentDidMount() {
-        this.getAllBooks()
-    }
+    // handleChange = (book, event) => {
+    //     BooksAPI.update(book, event.target.value).then(this.getAllBooks)
+    // }    
+    // componentDidMount() {
+    //     this.getAllBooks()
+    // }
     render(){
     return (     
         (
@@ -42,7 +30,8 @@ class ShelveBooks extends Component {
                     <h2 className="bookshelf-title">Currently Reading</h2>
                     <div className="bookshelf-books">
                       <ol className="books-grid">
-                      {this.sortBooks(this.state.books,'currentlyReading')}
+                            <Shelf 
+                            section='currentlyReading'/>
                       </ol>
                     </div>
                   </div>
@@ -50,7 +39,9 @@ class ShelveBooks extends Component {
                     <h2 className="bookshelf-title">Want to Read</h2>
                     <div className="bookshelf-books">
                       <ol className="books-grid">
-                      {this.sortBooks(this.state.books, 'wantToRead')}
+                      <Shelf 
+                      section='wantToRead'
+                      />
                       </ol>
                     </div>
                   </div>
@@ -58,7 +49,8 @@ class ShelveBooks extends Component {
                     <h2 className="bookshelf-title">Read</h2>
                     <div className="bookshelf-books">
                       <ol className="books-grid">
-                      {this.sortBooks(this.state.books, 'read')}
+                      <Shelf 
+                      section='read'/>
                       </ol>
                     </div>
                   </div>
@@ -71,4 +63,4 @@ class ShelveBooks extends Component {
           )
     )
 }}
-export default ShelveBooks
+export default ListBooks
