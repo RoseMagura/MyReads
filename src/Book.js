@@ -32,7 +32,7 @@ class Book extends Component {
                         backgroundSize: 'cover'
                         }}></div>} 
                     <div className="book-shelf-changer">
-                    <select value={this.state.shelf || 'none'} 
+                    <select value={this.state.shelf || item.shelf ||'none'} 
                         onChange={(event) => 
                         this.props.onChange(item, event)}>
                         <option value="" disabled>Move to...</option>
