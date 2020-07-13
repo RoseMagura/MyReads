@@ -1,6 +1,19 @@
 import React, {Component} from 'react'
 
 class Book extends Component {
+    state = {
+        shelf: ''
+    }
+    setShelf = () => {
+        const shelvedBooks = this.props.shelvedBooks
+        shelvedBooks.map((book)=>{
+            this.props.info.id === book.id && 
+            this.setState({shelf: book.shelf})
+        })
+    }
+    componentDidMount(){
+        this.props.shelvedBooks && this.setShelf()
+    }
     render() {
         //get the book object from ShelveBooks
         const item = this.props.info
@@ -19,9 +32,10 @@ class Book extends Component {
                         backgroundSize: 'cover'
                         }}></div>} 
                     <div className="book-shelf-changer">
-                    <select onChange={(event) => 
+                    <select value={this.state.shelf || 'none'} 
+                        onChange={(event) => 
                         this.props.onChange(item, event)}>
-                        <option value="">Move to...</option>
+                        <option value="" disabled>Move to...</option>
                         <option value="currentlyReading">Currently Reading</option>
                         <option value="wantToRead">Want to Read</option>
                         <option value="read">Read</option>

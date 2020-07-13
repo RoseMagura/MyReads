@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import * as BooksAPI from './BooksAPI'
 import { Link } from 'react-router-dom'
+import Book from './Book'
 
 class ListBooks extends Component {
     state = {
         query: '',
         search: [],
-        books: []
+        books: [],
+        shelved: this.props.location.state.shelvedBooks
     }
     getAllBooks = () => {
         BooksAPI.getAll().then((all) => {
@@ -64,8 +66,8 @@ class ListBooks extends Component {
             search
         return (
             <div className="app">
-          <div className="search-books">
-            <div className="search-books-bar">
+                <div className="search-books">
+                    <div className="search-books-bar">
               <Link className="close-search" to='/'>Close</Link>
               <div className="search-books-input-wrapper">
                 <input type="text" 
@@ -75,7 +77,6 @@ class ListBooks extends Component {
               </div>
             </div>
             <div className="search-books-results">
-            {/* {console.log('query', query.length, 'results', results)} */}
             {results['error'] === 'empty query' && <div className='showing-books'>
                     <span> No results </span> 
                     <button onClick={this.clearQuery}>Clear Search</button>
@@ -87,34 +88,14 @@ class ListBooks extends Component {
                 </div>}
               <ol className="books-grid"> 
                   {query.length > 0 && results.length > 0 &&
-                    results.map((book) => (
-                    <li key={book.id}> 
-                        <div className="book">
-                        <div className="book-top">
-                            {'imageLinks' in book &&
-                            <div className="book-cover" style={{width: 128, height: 193,
-                            backgroundImage: `url(${book.imageLinks['thumbnail']})`,
-                            backgroundRepeat: 'no-repeat',
-                            backgroundPosition: 'center',
-                            backgroundSize: 'cover'
-                            }}></div>} 
-                         <div className="book-shelf-changer">
-                              <select onChange={(event) => this.handleChange(book, event)}>
-                                <option value="move">Move to...</option>
-                                <option value="currentlyReading">Currently Reading</option>
-                                <option value="wantToRead">Want to Read</option>
-                                <option value="read">Read</option>
-                                <option value="none">None</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div className="book-title"> {book.title} </div>
-                          {'authors' in book && 
-                          <div className="book-authors"> 
-                            {book.authors.join(', ')} 
-                          </div>}                              
-                        </div>
-                    </li>))}
+                    results.map((item) => (
+                        <Book 
+                        key={item.id}
+                        info={item}
+                        shelvedBooks={this.state.shelved}
+                        onChange={(item, event)=>{
+                            this.handleChange(item, event)}}/>
+                    ))}
                     </ol>
                 </div>
             </div> 

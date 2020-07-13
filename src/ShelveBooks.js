@@ -70,7 +70,13 @@ class ShelveBooks extends Component {
                 </div>
               </div>
               <div className="open-search">
-                <Link to='/search'className="open-search">Add Book</Link>
+                <Link to={{
+                    pathname: '/search',
+                    state: {
+                        shelvedBooks: this.state.books
+                    }
+                }}
+                    className="open-search">Add Book</Link>
               </div>
             </div>
             )
