@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import BookType, { FixMeLater } from '../types/Book';
+import { useState, useEffect } from 'react';
 
 // class Book extends Component {
 //     state = {
@@ -64,9 +66,11 @@ import React, { Component } from 'react'
 //     }
 // }
 
-const Book = () => {
-    return( <div>
-        <h2>BOOK</h2>
-    </div>)
+const Book = (props: FixMeLater) => {
+    const { info } = props;
+    return (
+        <div>
+            <h2>{info.title}</h2>
+        </div>)
 }
 export default Book
