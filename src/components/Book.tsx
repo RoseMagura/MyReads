@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import BookType, { FixMeLater } from '../types/Book';
 import { useState, useEffect } from 'react';
+import Cover from './Cover';
 
 // class Book extends Component {
 //     state = {
@@ -68,9 +69,15 @@ import { useState, useEffect } from 'react';
 
 const Book = (props: FixMeLater) => {
     const { info } = props;
+    const [shelf, setShelf] = useState(info.shelf);
+
     return (
-        <div>
+        <div className='book'>
+            <div className='book-top'>
+                 <Cover {...info.imageLinks}/>
+            </div>
             <h2>{info.title}</h2>
-        </div>)
+        </div>
+    )
 }
-export default Book
+export default Book;
