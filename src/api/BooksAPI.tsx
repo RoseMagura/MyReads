@@ -2,7 +2,6 @@ import Book from "../types/Book";
 
 const api = "https://reactnd-books-api.udacity.com";
 
-
 // Generate a unique token for storing your bookshelf data on the backend server.
 let token: string = localStorage.token;
 if (!token)

@@ -1,24 +1,16 @@
-import React from 'react'
-import * as BooksAPI from '../api/BooksAPI'
-import { Link } from 'react-router-dom'
-import Book from './Book'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Book from './Book';
 import BookType from '../types/Book';
 import { useState, useEffect } from 'react';
+import { PropsForChild } from '../types/PropsForChild';
 
-const ShelveBooks = () => {
+const ShelveBooks = (props: PropsForChild) => {
+  const { allBooks, changeShelf } = props; 
   const [books, setBooks] = useState<BookType[]>([]);
 
-  const getAllBooks = (): void => {
-    BooksAPI.getAll().then(all => setBooks(all));
-  }
-
-  const updateCategory = (bookToUpdate: BookType, category: string): void => {
-    setBooks(
-      books.map(book =>
-        book.id === bookToUpdate.id
-          ? { ...book, shelf: category }
-          : book)
-    )
+  const setUp = () => {
+    setBooks(props.allBooks);
   }
 
   const sortBooks = (books: BookType[], category: string) => {
@@ -27,12 +19,12 @@ const ShelveBooks = () => {
     )).map(item => <Book
       key={item.id}
       info={item}
-      onChange={updateCategory}
+      onChange={changeShelf}
     />
     )
   }
 
-  useEffect(getAllBooks, []);
+  useEffect(setUp, [allBooks]);
 
   return (
     (
