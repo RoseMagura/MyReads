@@ -1,6 +1,11 @@
+import { CoverProps } from "./CoverProps";
+
 export default interface Book {
-    id: number;
+    id: string;
     shelf: string;
+    imageLinks: CoverProps;
+    title: string;
+    authors: string[];
 }
 
 // for development only

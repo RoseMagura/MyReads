@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import * as BooksAPI from '../api/BooksAPI'
 import { Link } from 'react-router-dom'
 import Book from './Book'
@@ -6,17 +6,20 @@ import BookType from '../types/Book';
 import { useState, useEffect } from 'react';
 
 const ShelveBooks = () => {
-  const [books, setBooks] = useState([]);
+  const [books, setBooks] = useState<BookType[]>([]);
 
   const getAllBooks = (): void => {
     BooksAPI.getAll().then(all => setBooks(all));
   }
 
-  const updateCategory =
-    // (book: Book, ) 
-    () => {
-      console.log('updating category');
-    }
+  const updateCategory = (bookToUpdate: BookType, category: string): void => {
+    setBooks(
+      books.map(book =>
+        book.id === bookToUpdate.id
+          ? { ...book, shelf: category }
+          : book)
+    )
+  }
 
   const sortBooks = (books: BookType[], category: string) => {
     return (books.filter(b =>
