@@ -44,7 +44,7 @@ const Search = (props: PropsForChild) => {
                     <div className="search-books-results">
                         <ol className='books-grid'>
                             {searchRes.length > 0
-                                ? searchRes.map((item) => {
+                                ? query.length > 0 && searchRes.map((item) => {
                                     item.shelf = findShelf(item.id);
                                     return <Book
                                         key={item.id}
