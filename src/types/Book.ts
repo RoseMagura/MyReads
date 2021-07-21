@@ -7,6 +7,3 @@ export default interface Book {
     title: string;
     authors: string[];
 }
-
-// for development only
-export type FixMeLater = any;

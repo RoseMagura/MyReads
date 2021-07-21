@@ -6,17 +6,14 @@ import Cover from './Cover';
 const Book = (props: { info: BookType, onChange: Function }) => {
     const { info } = props;
     const [shelf, setShelf] = useState(info.shelf);
-
+    
     return (
         <div className='book'>
             <div className='book-top'>
                 <div className='button-container'>
                     <Cover {...info.imageLinks} />
                 </div>
-                <div
-                    // TODO: Fix issue with position: absolute CSS
-                    className="book-shelf-changer"
-                >
+                <div className="book-shelf-changer">
                     <select value={shelf || 'none'}
                         onChange={(event) => {
                             setShelf(event.target.value);

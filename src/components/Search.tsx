@@ -6,7 +6,7 @@ import BookType from '../types/Book'
 import { PropsForChild } from '../types/PropsForChild'
 
 const Search = (props: PropsForChild) => {
-    const { changeShelf } = props;
+    const { allBooks, changeShelf } = props;
     const [query, setQuery] = useState('');
     const [searchRes, setSearchRes] = useState<BookType[]>([]);
 
@@ -20,6 +20,14 @@ const Search = (props: PropsForChild) => {
         setSearchRes([]);
     }
 
+    const findShelf = (id: string): string => {
+        const selectedBooks = allBooks.filter(book => book.id === id);
+        if(selectedBooks.length > 0){
+            return selectedBooks[0].shelf;
+        }
+        return 'none';
+    }
+    
     return (
         <div>
             <div className="app">
@@ -36,13 +44,14 @@ const Search = (props: PropsForChild) => {
                     <div className="search-books-results">
                         <ol className='books-grid'>
                             {searchRes.length > 0
-                                ? searchRes.map((item) => (
-                                    <Book
+                                ? searchRes.map((item) => {
+                                    item.shelf = findShelf(item.id);
+                                    return <Book
                                         key={item.id}
                                         info={item}
                                         onChange={changeShelf}
                                     />
-                                ))
+                                })
                                 : query.length > 0
                                     ? <div className='showing-books'>
                                         <span> No results </span>
