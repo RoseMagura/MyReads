@@ -14,10 +14,19 @@ const BooksApp = () => {
         BooksAPI.getAll().then((all: BookType[]) => setBooks(all));
     }
 
+    const format = (word: string) => {
+        const caps = word.charAt(0).toUpperCase() + word.slice(1);
+        return caps.split(/(?=[A-Z])/).join(' ');
+    }
+
     const updateCategory =
         async (bookToUpdate: BookType, category: string): Promise<void> => {
             await BooksAPI.update(bookToUpdate, category);
             getAllBooks();
+            category === 'none'
+                ? alert(`Removing ${bookToUpdate.title} from shelves.`)
+                : alert(`Moved ${bookToUpdate.title} to shelf ${format(category)}.`);
+
         }
 
     useEffect(getAllBooks, []);

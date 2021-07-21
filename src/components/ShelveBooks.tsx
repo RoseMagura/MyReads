@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { PropsForChild } from '../types/PropsForChild';
 
 const ShelveBooks = (props: PropsForChild) => {
-  const { allBooks, changeShelf } = props; 
+  const { allBooks, changeShelf } = props;
   const [books, setBooks] = useState<BookType[]>([]);
 
   const setUp = () => {

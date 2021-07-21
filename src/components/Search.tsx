@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import * as BooksAPI from '../api/BooksAPI'
 import { Link } from 'react-router-dom'
 import Book from './Book'
@@ -6,36 +6,19 @@ import BookType from '../types/Book'
 import { PropsForChild } from '../types/PropsForChild'
 
 const Search = (props: PropsForChild) => {
-    const { allBooks, changeShelf } = props;
+    const { changeShelf } = props;
     const [query, setQuery] = useState('');
     const [searchRes, setSearchRes] = useState<BookType[]>([]);
-    const [books, setBooks] = useState<BookType[]>([]);
 
-    const setUp = () => {
-        setBooks(allBooks);
-        if (searchRes.length === 0) {
-            setSearchRes(allBooks);
-        }
-    }
-
-    const searchApi = () => {
-        console.log('searching');
-    }
-
-    const updateQuery = (subStr: string) => {
+    const updateQuery = async (subStr: string) => {
         setQuery(subStr);
-        if (subStr !== '') {
-            const searchRes = searchApi();
-            // TODO: setSearchRes with searchRes
-        }
+        subStr !== '' && setSearchRes(await BooksAPI.search(subStr));
     }
 
     const clearQuery = () => {
         setQuery('');
-        setSearchRes(allBooks);
+        setSearchRes([]);
     }
-
-    useEffect(setUp, [props.allBooks]);
 
     return (
         <div>
@@ -51,34 +34,24 @@ const Search = (props: PropsForChild) => {
                         </div>
                     </div>
                     <div className="search-books-results">
-                        {/* {JSON.stringify(searchRes)} */}
-                        {searchRes.length > 0 && 
-                            searchRes.map((item) => (
-                                <Book
-                                    key={item.id}
-                                    info={item}
-                                    onChange={changeShelf}
-                                     />
-                            ))
-                        }
-                        {searchRes.length === 0 &&  query.length > 0 && <div className='showing-books'>
-                            <span> No results </span>
-                            <button onClick={clearQuery}>Clear Search</button>
-                        </div>}
-                        {query.length > 0 && searchRes.length > 0 &&
-                            <div className='showing-books'>
-                                <span>Now showing {searchRes.length} books </span>
-                                <button onClick={clearQuery}>Clear Search</button>
-                            </div>}
-                        <ol className="books-grid">
-                            {query.length > 0 && searchRes.length > 0 &&
-                                searchRes.map((item) => (
+                        <ol className='books-grid'>
+                            {searchRes.length > 0
+                                ? searchRes.map((item) => (
                                     <Book
                                         key={item.id}
                                         info={item}
                                         onChange={changeShelf}
-                                         />
-                                ))}
+                                    />
+                                ))
+                                : query.length > 0
+                                    ? <div className='showing-books'>
+                                        <span> No results </span>
+                                        <button onClick={clearQuery}>Clear Search</button>
+                                    </div>
+                                    : <div>
+                                        <span>Please input search term above</span>
+                                    </div>
+                            }
                         </ol>
                     </div>
                 </div>
